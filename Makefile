@@ -9,6 +9,9 @@ run:
 	python src/blockchain.py
 
 # Command: make test
+dashboard:
+	streamlit run src/dashboard.py
+
 # Description: Runs the unit test suite
 test:
 	python tests/test_blockchain.py
