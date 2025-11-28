@@ -3,7 +3,7 @@
 
 # Difficulty Level: Controls how many leading zeros are required
 # Standard Level: 4
-MINING_DIFFICULTY = 5
+MINING_DIFFICULTY = 2
 
 # Reward for mining a new block
 MINING_REWARD = 100
