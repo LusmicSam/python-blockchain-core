@@ -1,7 +1,7 @@
 import hashlib
 import json
 from time import time
-
+# OPTIMIZATION EXPERIMENT: PENDING REVIEW
 class Blockchain(object):
     def __init__(self):
         self.chain = []
