@@ -1,4 +1,3 @@
-```markdown
 # ⛓️ PyChain: Distributed Ledger & DeFi Prototype
 
 PyChain is a **production-grade implementation of a Blockchain data structure in Python**.  
@@ -11,8 +10,6 @@ Unlike toy scripts, this project demonstrates a **full-stack distributed system*
 - CI/CD and DevOps automation  
 
 ---
-
-
 
 ## 📸 Project Screenshots
 
@@ -32,12 +29,12 @@ Left: Node A Mining (Port 5000) | Right: Node B Syncing (Port 5001)
 
 The system is designed as a **distributed network of independent nodes**, each running a Flask API and maintaining a local copy of the ledger.
 
-```
+```mermaid
 graph TD
     subgraph "Client Layer"
-        User[👤 User]
-        Dash[📊 Streamlit Dashboard]
-        Wallet[🔑 Crypto Wallet]
+        User["👤 User"]
+        Dash["📊 Streamlit Dashboard"]
+        Wallet["🔑 Crypto Wallet"]
     end
 
     subgraph "Network Layer (Dockerized)"
@@ -47,10 +44,10 @@ graph TD
     end
 
     subgraph "Core Logic"
-        API[Flask API]
-        Consensus[⚔️ Consensus Algorithm]
-        PoW[⛏️ Proof of Work]
-        Chain[🔗 Immutable Ledger]
+        API["Flask API"]
+        Consensus["⚔️ Consensus Algorithm"]
+        PoW["⛏️ Proof of Work"]
+        Chain["🔗 Immutable Ledger"]
     end
 
     User -->|Views Data| Dash
@@ -72,7 +69,7 @@ graph TD
 
 How a financial transaction flows from a wallet into the immutable ledger.
 
-```
+```mermaid
 sequenceDiagram
     participant U as User (Wallet)
     participant N1 as Node A
@@ -134,9 +131,9 @@ Real-time visualization of blocks, transactions, and mining operations using **S
 
 ### Option A: Quick Start (Docker) — **Recommended**
 
-Run the entire stack (Dashboard + Node) using Docker.
+Run the entire stack (API + Dashboard) using Docker.
 
-```
+```bash
 docker-compose up --build
 ```
 
@@ -156,26 +153,20 @@ docker-compose up --build
 
 #### Install Dependencies
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
-#### Run Multiple Nodes (P2P Simulation)
+#### Run the Flask API
 
-**Terminal 1 (Node A):**
-```
-make node1
-```
-
-**Terminal 2 (Node B):**
-```
-make node2
+```bash
+python src/api.py 5000
 ```
 
 #### Launch Dashboard
 
-```
-make dashboard
+```bash
+streamlit run src/dashboard.py
 ```
 
 ---
@@ -184,7 +175,7 @@ make dashboard
 
 This repository follows **strict Gitflow conventions**, showcasing feature isolation, structured merges, and release tagging.
 
-```
+```mermaid
 gitGraph
     commit
     branch develop
@@ -230,7 +221,6 @@ screenshots/
     └── p2p_sync.png
 src/
     ├── __pycache__/
-        └── blockchain.cpython-310.pyc
     ├── api.py
     ├── blockchain.py
     ├── dashboard.py
@@ -253,7 +243,7 @@ requirements.txt
 
 Run the test suite to verify core functionality:
 
-```
+```bash
 # Run all tests
 make test
 
@@ -269,15 +259,15 @@ Contributions are welcome! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch
-   ```
+   ```bash
    git checkout -b feat/amazing-feature
    ```
 3. Commit your changes
-   ```
+   ```bash
    git commit -m "feat: add amazing feature"
    ```
 4. Push to branch
-   ```
+   ```bash
    git push origin feat/amazing-feature
    ```
 5. Open a Pull Request
@@ -302,4 +292,3 @@ See `LICENSE` for more information.
 ---
 
 **⭐ Star this repo if you find it useful!**
-```
