@@ -4,18 +4,23 @@ PyChain is a production-grade implementation of a Blockchain data structure in P
 
 📸 Project Screenshots
 
-Streamlit Dashboard
+**Streamlit Dashboard**
 
 Real-time block visualization, wallet simulation, and mining interface.
 
-P2P Network Simulation
+![Dashboard](./Screenshots/dashboard.png)
+
+**P2P Network Simulation**
 
 Left: Node A Mining (Port 5000) | Right: Node B Syncing (Port 5001)
+
+![P2P Sync](./Screenshots/p2p_sync.png)
 
 🏗️ System Architecture
 
 The system is designed as a distributed network of nodes, each running a Flask API and maintaining a local copy of the ledger.
 
+```mermaid
 graph TD
     subgraph "Client Layer"
         User[👤 User]
@@ -47,12 +52,14 @@ graph TD
     API --> Consensus
     Consensus --> Chain
     PoW --> Chain
+```
 
 
 💸 Transaction Lifecycle (Sequence Diagram)
 
 How a financial transaction moves from a user's wallet to the immutable ledger.
 
+```mermaid
 sequenceDiagram
     participant U as User (Wallet)
     participant N1 as Node A
@@ -76,6 +83,7 @@ sequenceDiagram
     
     N2->>N1: GET /chain (Consensus Check)
     N2->>N2: Update Local Chain
+```
 
 
 🚀 Key Features
@@ -178,6 +186,7 @@ make dashboard
 
 This project adheres to strict Gitflow conventions. The repository history demonstrates complex branching, feature isolation, and merge conflict resolution.
 
+```mermaid
 gitGraph
     commit
     branch develop
@@ -196,6 +205,7 @@ gitGraph
     merge feat/p2p-sync
     checkout main
     merge develop tag: "v1.0.0"
+```
 
 
 📡 API Endpoints
