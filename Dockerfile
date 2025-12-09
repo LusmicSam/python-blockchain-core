@@ -14,8 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code
 COPY . .
 
-# Expose the port Streamlit runs on
-EXPOSE 8501
+# Expose ports for Flask API and Streamlit dashboard
+EXPOSE 5000 8501
 
-# Command to run the application
-CMD ["streamlit", "run", "src/dashboard.py", "--server.address=0.0.0.0"]
+# Default command - can be overridden in docker-compose
+CMD ["python", "src/api.py", "5000"]

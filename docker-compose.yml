@@ -1,8 +1,26 @@
 version: '3.8'
 
 services:
-  blockchain-web:
-    build: .
+  blockchain-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blockchain-api
+    ports:
+      - "5000:5000"
+    volumes:
+      # Syncs your local folder with the container (Hot Reloading)
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python src/api.py 5000
+    restart: unless-stopped
+
+  blockchain-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: blockchain-dashboard
     ports:
       - "8501:8501"
     volumes:
@@ -10,3 +28,7 @@ services:
       - .:/app
     environment:
       - PYTHONUNBUFFERED=1
+    command: streamlit run src/dashboard.py --server.address=0.0.0.0 --server.port=8501
+    restart: unless-stopped
+    depends_on:
+      - blockchain-api
