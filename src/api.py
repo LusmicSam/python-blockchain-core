@@ -32,70 +32,20 @@ def mine():
         amount=1,
     )
 
-@app.route('/nodes/register', methods=['POST'])
-
-    nodes = values.get('nodes')
-    if nodes is None:
-        return "Error: Please supply a valid list of nodes", 400
-
-    return jsonify(response), 201
-
-def consensus():
-    # This asks neighboring nodes for their chains and replaces ours if theirs is longer
-    if replaced:
-        response = {
-            'message': 'Our chain was replaced',
-    else:
-        response = {
-            'message': 'Our chain is authoritative',
-            'chain': blockchain.chain
-        }
-
-if __name__ == '__main__':
-    # Allows running on different ports: python src/api.py 5001
-    port = 5000
-    if len(sys.argv) > 1:
-        port = int(sys.argv[1])
-    app.run(host='0.0.0.0', port=port)    return jsonify(response), 200
-            'new_chain': blockchain.chain
-        }
-    replaced = blockchain.resolve_conflicts()
-
-@app.route('/nodes/resolve', methods=['GET'])
-        'total_nodes': list(blockchain.nodes),
-    }
-    for node in nodes:
-        blockchain.register_node(node)
-
-    response = {
-        'message': 'New nodes have been added',
-    values = request.get_json()
-def register_nodes():
-    }
-    return jsonify(response), 200
-
     # Forge the new Block by adding it to the chain
     previous_hash = blockchain.hash(last_block)
-        'length': len(blockchain.chain),
-    response = {
-        'chain': blockchain.chain,
     block = blockchain.new_block(proof, previous_hash)
 
-def full_chain():
     response = {
-@app.route('/chain', methods=['GET'])
         'message': "New Block Forged",
         'index': block['index'],
         'transactions': block['transactions'],
-
         'proof': block['proof'],
         'previous_hash': block['previous_hash'],
     }
-        return jsonify({'message': 'Invalid Transaction (Signature Fail)'}), 403
     return jsonify(response), 200
 
 @app.route('/transactions/new', methods=['POST'])
-    else:
 def new_transaction():
     values = request.get_json()
 
@@ -104,7 +54,61 @@ def new_transaction():
     if not all(k in values for k in required):
         return 'Missing values', 400
 
-        response = {'message': f'Transaction will be added to Block {index}'}
-        return jsonify(response), 201
     # Create a new Transaction
     signature = values.get('signature') 
+    index = blockchain.new_transaction(values['sender'], values['recipient'], values['amount'], signature)
+
+    if index:
+        response = {'message': f'Transaction will be added to Block {index}'}
+        return jsonify(response), 201
+    else:
+        return jsonify({'message': 'Invalid Transaction (Signature Fail)'}), 403
+
+@app.route('/chain', methods=['GET'])
+def full_chain():
+    response = {
+        'chain': blockchain.chain,
+        'length': len(blockchain.chain),
+    }
+    return jsonify(response), 200
+
+@app.route('/nodes/register', methods=['POST'])
+def register_nodes():
+    values = request.get_json()
+
+    nodes = values.get('nodes')
+    if nodes is None:
+        return "Error: Please supply a valid list of nodes", 400
+
+    for node in nodes:
+        blockchain.register_node(node)
+
+    response = {
+        'message': 'New nodes have been added',
+        'total_nodes': list(blockchain.nodes),
+    }
+    return jsonify(response), 201
+
+@app.route('/nodes/resolve', methods=['GET'])
+def consensus():
+    # This asks neighboring nodes for their chains and replaces ours if theirs is longer
+    replaced = blockchain.resolve_conflicts()
+
+    if replaced:
+        response = {
+            'message': 'Our chain was replaced',
+            'new_chain': blockchain.chain
+        }
+    else:
+        response = {
+            'message': 'Our chain is authoritative',
+            'chain': blockchain.chain
+        }
+    return jsonify(response), 200
+
+if __name__ == '__main__':
+    # Allows running on different ports: python src/api.py 5001
+    port = 5000
+    if len(sys.argv) > 1:
+        port = int(sys.argv[1])
+    app.run(host='0.0.0.0', port=port)
