@@ -8,13 +8,13 @@ PyChain is a production-grade implementation of a Blockchain data structure in P
 
 Real-time block visualization, wallet simulation, and mining interface.
 
-![Dashboard](./Screenshots/dashboard.png)
+![Dashboard](./screenshots/dashboard.png)
 
 **P2P Network Simulation**
 
 Left: Node A Mining (Port 5000) | Right: Node B Syncing (Port 5001)
 
-![P2P Sync](./Screenshots/p2p_sync.png)
+![P2P Sync](./screenshots/p2p_sync.png)
 
 🏗️ System Architecture
 
@@ -29,9 +29,9 @@ graph TD
     end
 
     subgraph "Network Layer (Dockerized)"
-        NodeA[🖥️ Node A (Port 5000)]
-        NodeB[🖥️ Node B (Port 5001)]
-        NodeC[🖥️ Node C (Port 5002)]
+        NodeA["🖥️ Node A (Port 5000)"]
+        NodeB["🖥️ Node B (Port 5001)"]
+        NodeC["🖥️ Node C (Port 5002)"]
     end
 
     subgraph "Core Logic"
@@ -52,6 +52,7 @@ graph TD
     API --> Consensus
     Consensus --> Chain
     PoW --> Chain
+
 ```
 
 
