@@ -177,23 +177,133 @@ This repository follows **strict Gitflow conventions**, showcasing feature isola
 
 ```mermaid
 gitGraph
-    commit
-    branch develop
-    checkout develop
-    commit
-    branch feat/core-logic
-    checkout feat/core-logic
-    commit id: "Init Blockchain"
-    commit id: "Add Hashing"
-    checkout develop
-    merge feat/core-logic
-    branch feat/p2p-sync
-    checkout feat/p2p-sync
-    commit id: "Add Flask API"
-    checkout develop
-    merge feat/p2p-sync
-    checkout main
-    merge develop tag: "v1.0.0"
+   commit id: "Init Project"
+   
+   branch feat/core-logic
+   checkout feat/core-logic
+   commit id: "Blockchain Class"
+   checkout main
+   merge feat/core-logic
+   
+   branch test/unit-tests
+   checkout test/unit-tests
+   commit id: "Add Tests"
+   checkout main
+   merge test/unit-tests
+   
+   commit id: "Global Config"
+   branch fix/difficulty-adjust
+   checkout fix/difficulty-adjust
+   commit id: "Diff=2 (Fix)"
+   checkout main
+   commit id: "Diff=10 (Perf)"
+   merge fix/difficulty-adjust id: "Conflict Resolution"
+   
+   branch chore/setup-ci
+   checkout chore/setup-ci
+   commit id: "Github Actions"
+   checkout main
+   merge chore/setup-ci
+   
+   branch feat/web-dashboard
+   checkout feat/web-dashboard
+   commit id: "Streamlit UI"
+   checkout main
+   merge feat/web-dashboard
+   
+   branch chore/docker-setup
+   checkout chore/docker-setup
+   commit id: "Dockerfile"
+   checkout main
+   merge chore/docker-setup tag: "v0.0.5"
+   
+   branch feat/crypto-wallets
+   checkout feat/crypto-wallets
+   commit id: "ECDSA Keys"
+   checkout main
+   merge feat/crypto-wallets
+   
+   branch feat/p2p-networking
+   checkout feat/p2p-networking
+   commit id: "Flask API"
+   checkout main
+   merge feat/p2p-networking
+   
+   branch fix/ci-indentation
+   checkout fix/ci-indentation
+   commit id: "Fix API Indent"
+   checkout main
+   merge fix/ci-indentation
+   
+   commit id: "Refactor & Docs"
+   commit id: "Final Polish" tag: "v1.0.0"
+```
+
+---
+
+## 📸 Git Workflow & Troubleshooting Log
+
+This log documents the Git operations performed during the project's development, illustrating the workflow from initialization to deployment and detailing how merge conflicts were resolved.
+
+### 1. Project Initialization
+We started by initializing the repository in Git Bash and making the initial commit to set up the project foundation.
+![Initialization](./screenshots/initialize.png)
+
+### 2. Feature Branching & Merging
+To work on new features in isolation, we created separate branches. Once the features were ready, we successfully merged them back into the `main` branch.
+![Simple Merge](./screenshots/mergedsimple.png)
+
+### 3. Handling & Resolving Merge Conflicts
+**The Problem:** A merge conflict occurred when trying to merge a branch that had competing changes in the same file as `main`. Git Bash alerted us to the conflict.
+![Conflict Warning](./screenshots/conflict.png)
+
+**Investigation:** We checked the status and examined the conflicting file to identify the specific lines causing the issue.
+![Conflict Details](./screenshots/conflictsshow.png)
+
+**The Resolution:** We manually resolved the conflict by editing the code to keep the desired changes and removing the conflict markers (`<<<<<<<`, `=======`, `>>>>>>>`), then committed the resolved file.
+![Conflict Fixed](./screenshots/conflictfixed.png)
+
+### 4. CI/CD Verification
+After pushing the resolved changes, GitHub Actions automatically ran our CI/CD pipeline to verify that the build and tests passed.
+![GitHub Actions](./screenshots/actions.png)
+
+### 5. Docker Deployment
+With the code verified, we used Docker Compose to build and launch the application containers.
+![Docker Run](./screenshots/docker.png)
+
+### 📜 Git Commands Used
+
+The following commands were used to manage the project workflow:
+
+```bash
+# 1. Initialization
+git init
+git add .
+git commit -m "Initial commit"
+
+# 2. Inspecting Status & History
+git status                     # Check the state of changes
+git log                        # Show commit history
+git log --oneline              # Show simplified history
+git log --graph --oneline --decorate --all  # Visualize branch topology
+
+# 3. Working with Branches
+git checkout -b <branch-name>  # Create and switch to a new branch
+git branch                     # List local branches
+git checkout main              # Switch back to the main branch
+
+# 4. Merging, Tagging & Syncing
+git merge <branch-name>        # Merge a branch into the current branch
+git tag -a v1.0.0 -m "v1.0"    # Create a version tag
+git push origin main           # Push changes to remote
+git push --tags                # Push tags to remote
+
+# 5. Resolving Conflicts
+# After a merge conflict occurs:
+git status                     # Identify conflicted files
+# ... manual edit to fix files ...
+git add <file>                 # Stage the resolved file
+git commit                     # Commit the resolution
 ```
 
 ---
