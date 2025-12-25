@@ -175,70 +175,6 @@ streamlit run src/dashboard.py
 
 This repository follows **strict Gitflow conventions**, showcasing feature isolation, structured merges, and release tagging.
 
-```mermaid
-gitGraph
-   commit id: "Init Project"
-   
-   branch feat/core-logic
-   checkout feat/core-logic
-   commit id: "Blockchain Class"
-   checkout main
-   merge feat/core-logic
-   
-   branch test/unit-tests
-   checkout test/unit-tests
-   commit id: "Add Tests"
-   checkout main
-   merge test/unit-tests
-   
-   commit id: "Global Config"
-   branch fix/difficulty-adjust
-   checkout fix/difficulty-adjust
-   commit id: "Diff=2 (Fix)"
-   checkout main
-   commit id: "Diff=10 (Perf)"
-   merge fix/difficulty-adjust id: "Conflict Resolution"
-   
-   branch chore/setup-ci
-   checkout chore/setup-ci
-   commit id: "Github Actions"
-   checkout main
-   merge chore/setup-ci
-   
-   branch feat/web-dashboard
-   checkout feat/web-dashboard
-   commit id: "Streamlit UI"
-   checkout main
-   merge feat/web-dashboard
-   
-   branch chore/docker-setup
-   checkout chore/docker-setup
-   commit id: "Dockerfile"
-   checkout main
-   merge chore/docker-setup tag: "v0.0.5"
-   
-   branch feat/crypto-wallets
-   checkout feat/crypto-wallets
-   commit id: "ECDSA Keys"
-   checkout main
-   merge feat/crypto-wallets
-   
-   branch feat/p2p-networking
-   checkout feat/p2p-networking
-   commit id: "Flask API"
-   checkout main
-   merge feat/p2p-networking
-   
-   branch fix/ci-indentation
-   checkout fix/ci-indentation
-   commit id: "Fix API Indent"
-   checkout main
-   merge fix/ci-indentation
-   
-   commit id: "Refactor & Docs"
-   commit id: "Final Polish" tag: "v1.0.0"
-```
-
 ---
 
 ## 📸 Git Workflow & Troubleshooting Log
@@ -342,7 +278,6 @@ config.py
 docker-compose.yml
 Dockerfile
 Makefile
-python-app.yml
 README.md
 requirements.txt
 ```
