@@ -5,9 +5,9 @@ name: Blockchain CI
 
 on:
   push:
-    branches: [ "main", "feat/*" ]
+    branches: [ "master", "feat/*" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "master" ]
 
 permissions:
   contents: read
@@ -40,3 +40,47 @@ jobs:
     - name: Run Unit Tests
       run: |
         python tests/test_blockchain.py
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master'
+    
+    steps:
+    - name: Deploy to AWS EC2
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ubuntu
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          # Install Docker & Docker Compose if not present
+          if ! type docker > /dev/null; then
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
+            sudo usermod -aG docker ubuntu
+            sudo systemctl enable docker
+            sudo systemctl start docker
+          fi
+          if ! type docker-compose > /dev/null; then
+            sudo curl -L "https://github.com/docker/compose/releases/download/v2.20.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+          fi
+          
+          # Clone or update repository
+          if [ ! -d "blockchain-core" ]; then
+            git clone https://github.com/${{ github.repository }}.git blockchain-core
+          fi
+          cd blockchain-core
+          
+          # Fetch the specific directory and latest changes
+          git fetch --all
+          git checkout master
+          git pull origin master
+          
+          # Navigate to project folder
+          cd fold || exit
+          
+          # Run Docker Compose
+          sudo docker-compose down
+          sudo docker-compose up -d --build
